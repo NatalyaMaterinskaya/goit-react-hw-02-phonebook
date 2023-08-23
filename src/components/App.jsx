@@ -1,16 +1,25 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101',
-      }}
-    >
-      <GlobalStyle />
-    </div>
-  );
+import { Component } from "react"
+
+export class App extends Component {
+  state = {
+    contacts:[],
+    filter:''
+  }
+  
+  render() {
+    return (
+      <div
+        style={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: 40,
+          color: '#010101',
+        }}
+      >
+        <GlobalStyle />
+      </div>
+    );
+  }
 };
