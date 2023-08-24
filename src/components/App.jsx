@@ -19,6 +19,13 @@ export class App extends Component {
     this.setState({ filter: newName });
   };
 
+  getСontactByFilter = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
   handleDelete = contactId => {
     this.setState(prevState => {
       return {
@@ -30,20 +37,20 @@ export class App extends Component {
   };
 
   handleAdd = newContact => {
+    const { contacts } = this.state;
+    const isExist = contacts.find(
+      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+    );
+    if (isExist) {
+      alert(`${newContact.name} is already in contacts.`);
+      return;
+    }
     this.setState(prevSate => {
       return {
         contacts: [...prevSate.contacts, newContact],
       };
-    })
+    });
   };
-
-  getСontactByFilter = () => {
-    const { contacts, filter } = this.state;
-    return contacts.filter(
-      contact => contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  }
-  
 
   render() {
     return (
@@ -61,15 +68,19 @@ export class App extends Component {
         <div>
           <h1>Phonebook</h1>
           <ContactForm onAdd={this.handleAdd} />
-          <h2>Contacts</h2>
-          <Filter
-            value={this.state.filter}
-            onChangeFilter={this.handleChangeFilter}
-          />
-          <ContactList
-            contacts={this.getСontactByFilter()}
-            onDelete={this.handleDelete}
-          />
+          {this.state.contacts.length > 0 && (
+            <>
+              <h2>Contacts</h2>
+              <Filter
+                value={this.state.filter}
+                onChangeFilter={this.handleChangeFilter}
+              />
+              <ContactList
+                contacts={this.getСontactByFilter()}
+                onDelete={this.handleDelete}
+              />
+            </>
+          )}
           <GlobalStyle />
         </div>
       </div>
