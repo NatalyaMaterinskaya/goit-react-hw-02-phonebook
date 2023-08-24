@@ -1,6 +1,13 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
+import {
+  StyledForm,
+  Label,
+  StyledField,
+  StyledErrorMessage,
+  Btn,
+} from './ContactForm.styled';
 
 const nameRegex =
   "^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
@@ -13,7 +20,9 @@ const schema = Yup.object().shape({
     .trim('Enter your name, please')
     .matches(nameRegex, 'Name is not valid')
     .required('Required'),
-  number: Yup.string().matches(numberRegex, 'Phone number is not valid'),
+  number: Yup.string()
+    .matches(numberRegex, 'Phone number is not valid')
+    .required('Required'),
 });
 
 export const ContactForm = ({ onAdd }) => {
@@ -26,22 +35,23 @@ export const ContactForm = ({ onAdd }) => {
       validationSchema={schema}
       onSubmit={(values, actions) => {
         onAdd({ ...values, id: nanoid() });
+        actions.resetForm();
       }}
     >
-      <Form>
-        <label>
+      <StyledForm>
+        <Label>
           Name
-          <Field name="name" />
-          <ErrorMessage name="name" />
-        </label>
+          <StyledField name="name" type="text" />
+          <StyledErrorMessage name="name" component="div" />
+        </Label>
 
-        <label>
+        <Label>
           Number
-          <Field name="number" type="number" />
-          <ErrorMessage name="number" />
-        </label>
-        <button type="submit">Add contact</button>
-      </Form>
+          <StyledField name="number" type="tel" />
+          <StyledErrorMessage name="number" component="div" />
+        </Label>
+        <Btn type="submit">Add contact</Btn>
+      </StyledForm>
     </Formik>
   );
 };
